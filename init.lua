@@ -86,8 +86,16 @@ vim.o.confirm = true
 -- Clear highlights on search when pressing <Esc> in normal mode
 --  See `:help hlsearch`
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
+-- Set map of escaping to normal mode to jj
 vim.keymap.set('i', 'jj', '<Esc>')
-
+-- Set map of enter new line to the enter button
+vim.keymap.set('n', '<CR>', 'o<Esc>k')
+-- Set map of enter new line above to shift+enter
+vim.keymap.set('n', '<S-CR>', 'O<Esc>j')
+-- Set map of insert tab in normal mode
+vim.keymap.set('n', '<Tab>', '>>')
+-- Set map of remove tab in normal mode
+vim.keymap.set('n', '<S-Tab>', '<<')
 -- Diagnostic keymaps
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 
@@ -146,7 +154,8 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 
 ---@type vim.Option
-local rtp = vim.opt.rtp
+-- Hey! Put lazy in the runtime path for neovim!
+local rtp = vim.opt.runtimepath
 rtp:prepend(lazypath)
 
 -- [[ Configure and install plugins ]]
@@ -163,7 +172,6 @@ rtp:prepend(lazypath)
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'NMAC427/guess-indent.nvim', -- Detect tabstop and shiftwidth automatically
-  'tpope/vim-fugitive', -- the premier Vim plugin for Git
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
   -- keys can be used to configure plugin behavior/loading/etc.
@@ -196,6 +204,28 @@ require('lazy').setup({
         topdelete = { text = '‾' },
         changedelete = { text = '~' },
       },
+    },
+  },
+
+  {
+    'tpope/vim-fugitive',
+    cmd = {
+      'Git',
+      'G',
+      'Gdiffsplit',
+      'Gread',
+      'Gwrite',
+      'Ggrep',
+      'GMove',
+      'GDelete',
+      'GBrowse',
+    },
+    keys = {
+      { '<leader>gs', '<cmd>Git<cr>', desc = '[G]it [S]tatus' },
+      { '<leader>gd', '<cmd>Gdiffsplit<cr>', desc = '[G]it [D]iff' },
+      { '<leader>gc', '<cmd>Git commit<cr>', desc = '[G]it [C]ommit' },
+      { '<leader>gb', '<cmd>Git blame<cr>', desc = '[G]it [B]lame' },
+      { '<leader>gl', '<cmd>Git log<cr>', desc = '[G]it [L]og' },
     },
   },
 
