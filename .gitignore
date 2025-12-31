@@ -1,0 +1,9 @@
+# Ignore plugin installations (will be recreated by lazy.nvim)
+lazy/
+
+# Ignore generated files
+*.log
+.luarc.json
+
+# Ignore local overrides (optional)
+lua/custom/local.lua
